@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::create([
+        $user = \App\Models\User::create([
             'first_name' => 'romain',
             'last_name' => 'silvy',
             'email' => 'romain@silvy-leligois.fr',
@@ -25,13 +25,37 @@ class DatabaseSeeder extends Seeder
             'badge' => Str::uuid(),
         ]);
 
-        for ($i=0; $i < 4; $i++) {
-           for ($j=0; $j < 4; $j++) {
-               Room::create([
-                   'name' => 'Salle ' . ($i + 1) . '0' . ($j + 1),
-                   'capacity' => 30,
-               ]);
-           }
+        \App\Models\User::create([
+            'first_name' => 'damien',
+            'last_name' => 'comty',
+            'email' => 'damien@silvy-leligois.fr',
+            'password' => bcrypt('password'),
+            'badge' => Str::uuid(),
+        ]);
+
+        for ($i = 0; $i < 4; $i++) {
+            for ($j = 0; $j < 4; $j++) {
+                Room::create([
+                    'name' => 'Salle ' . ($i + 1) . '0' . ($j + 1),
+                    'capacity' => 30,
+                ]);
+            }
         }
+
+        // attach users to rooms
+        $room = Room::find(1);
+
+        $user->rooms()->attach($room, [
+            'start_date' => now()->addMinutes((0)),
+            'end_date' => now()->addMinutes((60)),
+        ]);
+        $user->rooms()->attach($room, [
+            'start_date' => now()->addMinutes((60)),
+            'end_date' => now()->addMinutes((120)),
+        ]);
+        $user->rooms()->attach($room, [
+            'start_date' => now()->addMinutes((120)),
+            'end_date' => now()->addMinutes((180)),
+        ]);
     }
 }
