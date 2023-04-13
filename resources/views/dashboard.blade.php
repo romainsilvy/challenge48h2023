@@ -11,7 +11,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         {{ $room->name }}
-                        <div id="calendar-{{ $room->id }}" class="hidden"></div>
+                        <div id="calendar-{{ $room->id }}"></div>
 
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
