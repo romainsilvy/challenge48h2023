@@ -10,16 +10,16 @@ use Illuminate\Support\Facades\Log;
 
 class RoomController extends Controller
 {
-    public function notAvailable($id)
+    public function notAvailable($number)
     {
-        $room = Room::find($id);
+        $room = Room::where('number', $number)->first();
 
         return response()->json($room->notAvailable());
     }
 
-    public function book($id, Request $request)
+    public function book($number, Request $request)
     {
-        $room = Room::find($id);
+        $room = Room::where('number', $number)->first();
         $user = auth()->user();
 
         $end = Carbon::parse($request->end)->addHours(2);
@@ -33,9 +33,9 @@ class RoomController extends Controller
         return response()->json("ok");
     }
 
-    public function unBook($id, Request $request)
+    public function unBook($number, Request $request)
     {
-        $room = Room::find($id);
+        $room = Room::where('number', $number)->first();
         $user = auth()->user();
 
         $end = Carbon::parse($request->end)->addHours(2);
@@ -46,9 +46,9 @@ class RoomController extends Controller
         return response()->json("ok");
     }
 
-    public function setUserPresent($id, $badgeId)
+    public function setUserPresent($number, $badgeId)
     {
-        $room = Room::findOrFail($id);
+        $room = Room::where('number', $number)->first();
         $user = User::where('badge', $badgeId)->first();
 
         $now = now();

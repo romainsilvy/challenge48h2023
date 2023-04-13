@@ -16,24 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/room/{number}/add-user/{badgeId}', [RoomController::class, 'setUserPresent'])->name('room.set.present');
 
-
-Route::post('/room/{id}/add-user/{badgeId}', [RoomController::class, 'setUserPresent'])->name('room.set.present');
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
 
-    Route::post('/room/{id}/book', [RoomController::class, 'book'])->name('room.book');
-    Route::post('/room/{id}/unbook', [RoomController::class, 'unBook'])->name('room.unbook');
-    Route::get('/room/{id}/not-available', [RoomController::class, 'notAvailable'])->name('room.not.available');
-
+    Route::post('/room/{number}/book', [RoomController::class, 'book'])->name('room.book');
+    Route::post('/room/{number}/unbook', [RoomController::class, 'unBook'])->name('room.unbook');
+    Route::get('/room/{number}/not-available', [RoomController::class, 'notAvailable'])->name('room.not.available');
 
     Route::get('/user/{badgeId}/add-to-room', [ProfileController::class, 'addToRoom'])->name('profile.add.to.room');
-
-
-
-
-
-
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

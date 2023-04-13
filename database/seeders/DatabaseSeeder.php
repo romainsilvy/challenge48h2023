@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             for ($j = 0; $j < 4; $j++) {
                 Room::create([
                     'name' => 'Salle ' . ($i + 1) . '0' . ($j + 1),
+                    'number' => ($i + 1) . '0' . ($j + 1),
                     'capacity' => 30,
                 ]);
             }
