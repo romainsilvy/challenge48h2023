@@ -18,7 +18,7 @@ class Room extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class)->withPivot(['start_date', 'end_date']);
+        return $this->belongsToMany(User::class)->withPivot(['start_date', 'end_date', 'present']);
     }
 
 

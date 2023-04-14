@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Group;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('badge');
             $table->string('password');
+            $table->foreignIdFor(Group::class);
             $table->rememberToken();
             $table->timestamps();
         });
