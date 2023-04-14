@@ -33,11 +33,11 @@
                     <div class="p-6 text-gray-900">
                         <div class="flex justify-between items-center">
                             <p>{{ $room->name }}</p>
-                            <p id="display-calendar-{{ $room->number }}" onclick="displayCalendar({{ $room->number }})">
+                            <p id="display-calendar-{{ $room->number }}" onclick="displayCalendar('{{ $room->number }}')">
                                 Réserver
                             </p>
                             <p class="hidden" id="hide-calendar-{{ $room->number }}"
-                                onclick="hideCalendar({{ $room->number }})">
+                                onclick="hideCalendar('{{ $room->number }}')">
                                 Masquer
                             </p>
                         </div>
