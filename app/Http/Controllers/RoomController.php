@@ -58,10 +58,8 @@ class RoomController extends Controller
         $numUsersPresent = $room->users()->wherePivot('start_date', '<', $now)->wherePivot('end_date', '>', $now)->wherePivot('present', true)->count();
 
         return response()->json([
-            'user' => $user->first_name . ' ' . $user->last_name,
-            'numUsersExpected' => $numUsers,
-            'numUsersPresent' => $numUsersPresent,
-            'capacity' => $room->capacity,
+            'user' => $user,
+            'room' => $room,
         ]);
     }
 
@@ -77,6 +75,13 @@ class RoomController extends Controller
         $rooms = Room::all();
 
         return response()->json($rooms);
+    }
+
+    public function getRoomDetails($number)
+    {
+        $room = Room::where('number', $number)->first();
+
+        return response()->json($room);
     }
 
 

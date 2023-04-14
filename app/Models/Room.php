@@ -19,6 +19,7 @@ class Room extends Model
     protected $appends = [
         'presents',
         'booked',
+        'not_presents'
     ];
 
     public function getPresentsAttribute()
@@ -30,6 +31,11 @@ class Room extends Model
             ->get()->count();
 
         return $rooms;
+    }
+
+    public function getNotPresentsAttribute()
+    {
+        return $this->booked - $this->presents;
     }
 
     public function getBookedAttribute()
