@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
         $randUsers = $users->except([251])->random(25);
         foreach ($randUsers as $user) {
             $start_date = '2023-04-14 08:00:00';
-            $end_date = '2023-04-14 12:00:00';
+            $end_date = '2023-04-14 19:00:00';
 
             $user->rooms()->attach($firstRoom, [
                 'start_date' => $start_date,
