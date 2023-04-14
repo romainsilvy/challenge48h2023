@@ -64,4 +64,13 @@ class RoomController extends Controller
             'capacity' => $room->capacity,
         ]);
     }
+
+    public function getRoomsByFloor($floor)
+    {
+        $rooms = Room::where('floor', $floor)->get();
+
+        return response()->json($rooms);
+    }
+
+
 }

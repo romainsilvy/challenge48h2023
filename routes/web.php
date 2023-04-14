@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/room/{number}/add-user/{badgeId}', [RoomController::class, 'setUserPresent'])->name('room.set.present');
+Route::post('/floor/{floor}', [RoomController::class, 'getRoomsByFloor'])->name('room.floor');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');

@@ -16,6 +16,33 @@ class Room extends Model
         'capacity',
     ];
 
+    protected $appends = [
+        'presents',
+        'booked',
+    ];
+
+    public function getPresentsAttribute()
+    {
+        $rooms = $this->users()
+            ->wherePivot('present', true)
+            ->wherePivot('start_date', '<=', now())
+            ->wherePivot('end_date', '>=', now())
+            ->get()->count();
+
+        return $rooms;
+    }
+
+    public function getBookedAttribute()
+    {
+        $rooms = $this->users()
+            ->wherePivot('present', false)
+            ->wherePivot('start_date', '<=', now())
+            ->wherePivot('end_date', '>=', now())
+            ->get()->count();
+
+        return $rooms;
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class)->withPivot(['start_date', 'end_date', 'present']);
@@ -37,18 +64,27 @@ class Room extends Model
                 ->count();
 
 
-            if($user->id == auth()->user()->id) {
+            if ($user->id == auth()->user()->id) {
                 $notAvailable[] = [
                     'title' => 'Reservé',
                     'start' => $start,
                     'end' => $end,
                 ];
             } else if ($numUsers >= $this->capacity) {
-                $notAvailable[] = [
+                $newEntry = [
                     'title' => 'Complet',
                     'start' => $start,
                     'end' => $end,
                 ];
+
+                $entryExists = array_reduce($notAvailable, function ($carry, $entry) use ($newEntry) {
+                    return $carry || ($entry['start'] == $newEntry['start'] && $entry['end'] == $newEntry['end']);
+                }, false);
+
+                // Si une entrée identique n'existe pas encore, ajouter la nouvelle entrée
+                if (!$entryExists) {
+                    $notAvailable[] = $newEntry;
+                }
             }
         }
 

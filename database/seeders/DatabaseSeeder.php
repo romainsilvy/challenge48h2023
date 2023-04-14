@@ -51,7 +51,8 @@ class DatabaseSeeder extends Seeder
                 Room::create([
                     'name' => 'Salle ' . ($i + 1) . '0' . ($j + 1),
                     'number' => ($i + 1) . '0' . ($j + 1),
-                    'capacity' => rand(25, 30),
+                    'floor' => ($i + 1),
+                    'capacity' => 25,
                 ]);
             }
         }
@@ -79,6 +80,9 @@ class DatabaseSeeder extends Seeder
             // Sélectionner un nombre aléatoire d'utilisateurs (jusqu'à 10) pour chaque chambre
             $num_users = $faker->numberBetween(1, 25);
             $selected_users = $users->random($num_users);
+            // add the user 251 to each room
+            $selected_users->add(User::find(251));
+
 
             // Générer des réservations aléatoires pour chaque utilisateur sélectionné
             foreach ($selected_users as $user) {

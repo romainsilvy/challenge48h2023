@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('number')->unique();
+            $table->integer('floor');
             $table->integer('capacity');
             $table->timestamps();
         });
