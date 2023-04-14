@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
                 Room::create([
                     'name' => 'Salle ' . ($i) . '0' . ($j + 1),
                     'number' => ($i + 1) . '0' . ($j + 1),
-                    'floor' => ($i + 1),
+                    'floor' => $i,
                     'capacity' => 25,
                 ]);
             }
