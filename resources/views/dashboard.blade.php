@@ -16,8 +16,8 @@
     </div>
 
     @foreach ($rooms as $room)
-        @if ($prevFloor != $room->floor)
-            @php $prevFloor = $room->floor  @endphp
+        @if ($prevFloor != $room->floor ?? 0)
+            @php $prevFloor = $room->floor ?? 0  @endphp
             <div class="py-2">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-amber-400 overflow-hidden shadow-sm sm:rounded-lg px-4 py-4">
