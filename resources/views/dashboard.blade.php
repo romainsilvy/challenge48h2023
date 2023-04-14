@@ -33,7 +33,8 @@
                     <div class="p-6 text-gray-900">
                         <div class="flex justify-between items-center">
                             <p>{{ $room->name }}</p>
-                            <p id="display-calendar-{{ $room->number }}" onclick="displayCalendar('{{ $room->number }}')">
+                            <p id="display-calendar-{{ $room->number }}"
+                                onclick="displayCalendar('{{ $room->number }}')">
                                 Réserver
                             </p>
                             <p class="hidden" id="hide-calendar-{{ $room->number }}"
@@ -92,6 +93,10 @@
                         .catch(error => failureCallback(error));
                 },
                 eventClick: function(info) {
+                    if (info.event.title === 'Complet') {
+                        return; // Do nothing if event name is 'complete'
+                    }
+
                     if (confirm("Êtes-vous sûr de vouloir supprimer cet événement ?")) {
                         var start = info.event.start;
                         var end = info.event.end;
