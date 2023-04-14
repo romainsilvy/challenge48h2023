@@ -7,9 +7,17 @@
         </h2>
     </x-slot>
 
+    <div class="py-2">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-amber-400 overflow-hidden shadow-sm sm:rounded-lg px-4 py-4">
+                <p class="text-xl text-center"> Etage 0</p>
+            </div>
+        </div>
+    </div>
+
     @foreach ($rooms as $room)
         @if ($prevFloor != $room->floor)
-            @php $prevFloor = $room->floor @endphp
+            @php $prevFloor = $room->floor  @endphp
             <div class="py-2">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-amber-400 overflow-hidden shadow-sm sm:rounded-lg px-4 py-4">
