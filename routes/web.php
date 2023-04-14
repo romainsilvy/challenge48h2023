@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/room/{number}/add-user/{badgeId}', [RoomController::class, 'setUserPresent'])->name('room.set.present');
-Route::get('/floor/{floor}', [RoomController::class, 'getRoomsByFloor'])->name('room.floor');
+Route::post('api/room/{number}/add-user/{badgeId}', [RoomController::class, 'setUserPresent'])->name('room.set.present');
+Route::get('api/floor/{floor}', [RoomController::class, 'getRoomsByFloor'])->name('room.floor');
+Route::get('api/rooms', [RoomController::class, 'getAllRooms'])->name('room.all');
+
 
 
 Route::middleware('auth')->group(function () {
