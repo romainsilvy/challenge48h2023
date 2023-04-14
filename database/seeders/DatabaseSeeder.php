@@ -46,10 +46,10 @@ class DatabaseSeeder extends Seeder
             'group_id' => '1'
         ]);
 
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i <= 4; $i++) {
             for ($j = 0; $j < 4; $j++) {
                 Room::create([
-                    'name' => 'Salle ' . ($i + 1) . '0' . ($j + 1),
+                    'name' => 'Salle ' . ($i) . '0' . ($j + 1),
                     'number' => ($i + 1) . '0' . ($j + 1),
                     'floor' => ($i + 1),
                     'capacity' => 25,
