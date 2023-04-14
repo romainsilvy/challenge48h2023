@@ -68,6 +68,8 @@ class DatabaseSeeder extends Seeder
             $start_date = '2023-04-14 08:00:00';
             $end_date = '2023-04-14 19:00:00';
 
+
+
             $user->rooms()->attach($firstRoom, [
                 'start_date' => $start_date,
                 'end_date' => $end_date
@@ -100,6 +102,7 @@ class DatabaseSeeder extends Seeder
                     'start_date' => $start_date,
                     'end_date' => $end_date
                 ]);
+
 
                 $start_date = $faker->dateTimeBetween('-1 week', '+1 week');
                 $start_date->setTime($start_time->hour + $faker->numberBetween(0, $end_time->hour - $start_time->hour), 0, 0);

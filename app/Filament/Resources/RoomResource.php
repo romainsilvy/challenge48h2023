@@ -61,6 +61,7 @@ class RoomResource extends Resource
     {
         return [
             'users' => RelationManagers\UsersRelationManager::class,
+            'bookedGroups' => RelationManagers\BookedGroupsRelationManager::class,
         ];
     }
 

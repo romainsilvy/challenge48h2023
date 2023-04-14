@@ -25,7 +25,7 @@ class RoomController extends Controller
         $end = Carbon::parse($request->end)->addHours(2);
         $start = Carbon::parse($request->start)->addHours(2);
 
-        $room->users()->attach($user, [
+        $room->bookedUsers()->attach($user, [
             'start_date' => $start,
             'end_date' => $end,
         ]);
@@ -41,7 +41,7 @@ class RoomController extends Controller
         $end = Carbon::parse($request->end)->addHours(2);
         $start = Carbon::parse($request->start)->addHours(2);
 
-        $room->users()->where('user_id', $user->id)->wherePivot('start_date', $start)->wherePivot('end_date', $end)->detach();
+        $room->bookedUsers()->where('user_id', $user->id)->wherePivot('start_date', $start)->wherePivot('end_date', $end)->detach();
 
         return response()->json("ok");
     }
@@ -52,10 +52,7 @@ class RoomController extends Controller
         $user = User::where('badge', $badgeId)->first();
 
         $now = now();
-        $room->users()->wherePivot('start_date', '<', $now)->wherePivot('end_date', '>', $now)->updateExistingPivot($user->id, ['present' => true]);
-
-        $numUsers = $room->users()->wherePivot('start_date', '<', $now)->wherePivot('end_date', '>', $now)->count();
-        $numUsersPresent = $room->users()->wherePivot('start_date', '<', $now)->wherePivot('end_date', '>', $now)->wherePivot('present', true)->count();
+        $room->bookedUsers()->wherePivot('start_date', '<', $now)->wherePivot('end_date', '>', $now)->updateExistingPivot($user->id, ['present' => true]);
 
         return response()->json([
             'user' => $user,

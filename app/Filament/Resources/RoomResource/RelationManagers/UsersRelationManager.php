@@ -15,7 +15,7 @@ class UsersRelationManager extends RelationManager
 
     protected static ?string $title = 'Bookings';
 
-    protected static string $relationship = 'users';
+    protected static string $relationship = 'bookedUsers';
 
     protected static ?string $recordTitleAttribute = 'first_name';
 

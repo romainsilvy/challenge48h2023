@@ -58,10 +58,9 @@ class User extends Authenticatable implements FilamentUser, HasName
         'email_verified_at' => 'datetime',
     ];
 
-
     public function rooms()
     {
-        return $this->belongsToMany(Room::class)->withPivot(['start_date', 'end_date', 'present']);
+        return $this->morphToMany(Room::class, 'bookable')->withPivot(['start_date', 'end_date', 'present']);
     }
 
     public function group()

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Group;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Room extends Model
 {
@@ -19,12 +21,13 @@ class Room extends Model
     protected $appends = [
         'presents',
         'booked',
-        'not_presents'
+        'not_presents',
+        'status',
     ];
 
     public function getPresentsAttribute()
     {
-        $rooms = $this->users()
+        $rooms = $this->bookedUsers()
             ->wherePivot('present', true)
             ->wherePivot('start_date', '<=', now())
             ->wherePivot('end_date', '>=', now())
@@ -38,9 +41,25 @@ class Room extends Model
         return $this->booked - $this->presents;
     }
 
+    public function getStatusAttribute()
+    {
+        $rooms = $this->bookedGroups()
+            ->wherePivot('start_date', '<=', now())
+            ->wherePivot('end_date', '>=', now())
+            ->get()->count();
+        // get the numer of booked
+        if ($rooms > 0) {
+            return 'Indisponible';
+        } else if ($this->booked >= $this->capacity) {
+            return 'Complet';
+        } else {
+            return 'Libre';
+        }
+
+    }
     public function getBookedAttribute()
     {
-        $rooms = $this->users()
+        $rooms = $this->bookedUsers()
             ->wherePivot('present', false)
             ->wherePivot('start_date', '<=', now())
             ->wherePivot('end_date', '>=', now())
@@ -49,22 +68,37 @@ class Room extends Model
         return $rooms;
     }
 
-    public function users()
+    public function bookedUsers()
     {
-        return $this->belongsToMany(User::class)->withPivot(['start_date', 'end_date', 'present']);
+        return $this->morphedByMany(User::class, 'bookable')->withPivot(['start_date', 'end_date', 'present']);
     }
 
+    public function bookedGroups()
+    {
+        return $this->morphedByMany(Group::class, 'bookable')->withPivot(['start_date', 'end_date', 'present']);
+    }
 
 
     public function notAvailable()
     {
         $notAvailable = [];
 
-        foreach ($this->users as $user) {
+        foreach ($this->bookedGroups()->get() as $group) {
+            $start = $group->pivot->start_date;
+            $end = $group->pivot->end_date;
+
+            $notAvailable[] = [
+                'title' => 'Cours',
+                'start' => $start,
+                'end' => $end,
+            ];
+        }
+
+        foreach ($this->bookedUsers()->get() as $user) {
             $start = $user->pivot->start_date;
             $end = $user->pivot->end_date;
 
-            $numUsers = $this->users()
+            $numUsers = $this->bookedUsers()
                 ->wherePivot('start_date', $start)
                 ->wherePivot('end_date', $end)
                 ->count();
@@ -76,6 +110,7 @@ class Room extends Model
                     'start' => $start,
                     'end' => $end,
                 ];
+
             } else if ($numUsers >= $this->capacity) {
                 $newEntry = [
                     'title' => 'Complet',
@@ -87,7 +122,6 @@ class Room extends Model
                     return $carry || ($entry['start'] == $newEntry['start'] && $entry['end'] == $newEntry['end']);
                 }, false);
 
-                // Si une entrée identique n'existe pas encore, ajouter la nouvelle entrée
                 if (!$entryExists) {
                     $notAvailable[] = $newEntry;
                 }
